@@ -412,7 +412,10 @@ func main() {
 	log.Printf("Reports to run: %+v", reportFlag)
 	log.Print("Running sentinel config audit")
 	lsconf.ConfigIssueMapping = make(map[ConfigIssue][]SentinelPodConfig)
-	LoadSentinelConfigFile()
+	err := LoadSentinelConfigFile()
+	if err != nil {
+		log.Fatal("unable to laod config file, aborting run: ", err)
+	}
 	fmt.Printf("Configuration Audit Run for Sentinel '%s' at %s\n", lsconf.Name, time.Now())
 	fmt.Println()
 
