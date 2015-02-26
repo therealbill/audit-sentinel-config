@@ -335,7 +335,7 @@ func PodReport() {
 		v.validatePodSentinels()
 		issues := v.ConfigIssues()
 		if len(issues) > 0 {
-			log.Printf("%s has %d configuration issues", k, len(issues))
+			fmt.Printf("%s has %d configuration issues", k, len(issues))
 			PodsWithIssues++
 			for _, issue := range issues {
 				lsconf.ConfigIssueMapping[issue] = append(lsconf.ConfigIssueMapping[issue], v)
@@ -361,7 +361,7 @@ func FindDupeMasterIPs() {
 	for _, v := range lsconf.ManagedPodConfigs {
 		opod, dupe := masterIPtoPodMapping[v.IP]
 		if dupe {
-			log.Printf("Found Duplicate master! %s and %s share master IP %s", opod.Name, v.Name, v.IP)
+			fmt.Printf("Found Duplicate master! %s and %s share master IP %s", opod.Name, v.Name, v.IP)
 			lsconf.ConfigIssueMapping[DUPLICATEMASTERIP] = append(lsconf.ConfigIssueMapping[DUPLICATEMASTERIP], v)
 			lsconf.ConfigIssueMapping[DUPLICATEMASTERIP] = append(lsconf.ConfigIssueMapping[DUPLICATEMASTERIP], opod)
 			// test v
