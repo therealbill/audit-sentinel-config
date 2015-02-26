@@ -4,3 +4,12 @@ go:
   - 1.4.1
   - 1.3
   - tip
+
+
+deploy:
+  provider: releases
+  api_key: "1f1e4550c520ca4343f3c962a890e0af9163ced6"
+  file: "audit-sentinel-config"
+  skip_cleanup: true
+  on:
+    tags: true    
