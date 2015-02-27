@@ -8,5 +8,6 @@ deploy:
   api_key:
     secure: oV81iURgTqNsetx8LoEQxoOLjiaEZVPlLea2mNkiecm6OMauJHe4ehFu3feW0pnaLQgnsvP44CQDbVPX3DFgiFMePj+0HJdChTVPXNzBsEpJ2Y9Ty35+RW7z1y0GYEesCfUxQZkBR2t0VWmKC5MjG5umQPYTzU/+V7jRLElPCbg=
   file: audit-sentinel-config
+  skip_cleanup: true
   on:
     repo: rackerlabs/audit-sentinel-config
