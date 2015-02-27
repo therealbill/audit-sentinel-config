@@ -8,5 +8,5 @@ before_install:
   - go get github.com/tcnksm/ghr
 
 after_success:
-  - ghr --username rackerlabs --token $GITHUB_TOKEN -r audit-sentinel-config --replace --prerelease --debug pre-release audit-sentinel-config
+  - ghr --username rackerlabs --token $GITHUB_TOKEN -r audit-sentinel-config --replace --prerelease --debug pre-release ./audit-sentinel-config
 
