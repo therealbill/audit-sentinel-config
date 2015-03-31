@@ -1,4 +1,4 @@
-# Audit Sentinel Config [![Build Status](https://travis-ci.org/rackerlabs/audit-sentinel-config.svg?branch=master)](https://travis-ci.org/rackerlabs/audit-sentinel-config)
+# Audit Sentinel Config [![Build Status](https://travis-ci.org/TheRealBill/audit-sentinel-config.svg)](https://travis-ci.org/TheRealBill/audit-sentinel-config)
 
 This tool is intended to run on a Sentinel node. It will troll through
 the local sentinel config file looking for known errors, and issue a
