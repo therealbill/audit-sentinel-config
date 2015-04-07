@@ -1,0 +1,34 @@
+.TH audit-sentinel-config 8 "16 February 2015" "" ""
+.SH NAME 
+\fB
+\fBaudit-sentinel-config \- A tool for checking your Sentinel's config file for known non-syntax error conditions.
+\fB
+.SH SYNOPSIS 
+.B audit-sentinel-config [\-help] [\-report=all]
+.SH DESCRIPTION 
+\fIaudit-sentinel-config\fP examines the Sentinel config file and checks the overall setup and current state of monitored pods for specific error conditions which pass a syntax check made by Sentinel.
+
+Currently the tool looks for:
+.IP Duplicate Pods
+If any IPs are shared among multiple pods they will be identified. When a duplicate master IP is detected it will try to log into both and reocmmend the one it can't get into for deletion.
+.IP Lack of Quorum
+If the number of total sentinels is less than the specified quorum it will report on this
+.IP Lack of slaves
+If there are no slaves this will be noted
+
+.SH OPTIONS 
+\fIaudit-sentinel-config\fP requires no options but accepts a couple.
+
+.IP -report=(all|baseconfig|knownsentinels)
+All will run all reports. Baseconfig simply looks at the minimum needed to run a proper sentinel. Knownsentinels reports the other sentinels this config knows about.
+
+.IP -help 
+Show usage
+
+.SH COPYRIGHT 
+audit-sentinel-config is Copyright (c) 2015 Bill Anderson under the terms of the GPL
+.SH BUGS 
+Currently it does not accept an alternate location for the sentinel config file. Output formatting coud be inproved as well. The byerror flag doesn't do anything. More of the reports need added to flags listing.
+
+.SH AUTHOR 
+Bill Anderson <bill.anderson@rackspace.com>
