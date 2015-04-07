@@ -17,4 +17,4 @@ deploy:
   file: audit-sentinel-config
   skip_cleanup: true
   on:
-    repo: rackerlabs/audit-sentinel-config
+    repo: therealbill/audit-sentinel-config
