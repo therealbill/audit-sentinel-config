@@ -6,5 +6,6 @@ dist-tar: audit-sentinel-config
 
 
 audit-sentinel-config:
+	@godep restore
 	@go build 
 
