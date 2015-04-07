@@ -13,4 +13,4 @@ deploy:
     - "audit-sentinel-config.8"
   skip_cleanup: true
   on:
-    tags: true
+    branch: master
