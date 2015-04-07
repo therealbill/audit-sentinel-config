@@ -4,7 +4,7 @@
 \fBaudit-sentinel-config \- A tool for checking your Sentinel's config file for known non-syntax error conditions.
 \fB
 .SH SYNOPSIS 
-.B audit-sentinel-config [\-help] [\-report=all]
+.B audit-sentinel-config [\-config /etc/redis/sentinel.conf] [\-report=all] [\-byerror true] [\-help]
 .SH DESCRIPTION 
 \fIaudit-sentinel-config\fP examines the Sentinel config file and checks the overall setup and current state of monitored pods for specific error conditions which pass a syntax check made by Sentinel.
 
@@ -19,8 +19,14 @@ If there are no slaves this will be noted
 .SH OPTIONS 
 \fIaudit-sentinel-config\fP requires no options but accepts a couple.
 
+.IP -config=/etc/redis/sentinel.conf
+Specify, if not in /etc/redis/sentinel.conf, the Sentinel's configuration lives.
+
 .IP -report=(all|baseconfig|knownsentinels)
 All will run all reports. Baseconfig simply looks at the minimum needed to run a proper sentinel. Knownsentinels reports the other sentinels this config knows about.
+
+.IP -byerror=true
+Group errors by error type. Currently this is always true as I've not yet implemented alternative report formats.
 
 .IP -help 
 Show usage
@@ -28,7 +34,7 @@ Show usage
 .SH COPYRIGHT 
 audit-sentinel-config is Copyright (c) 2015 Bill Anderson under the terms of the GPL
 .SH BUGS 
-Currently it does not accept an alternate location for the sentinel config file. Output formatting coud be inproved as well. The byerror flag doesn't do anything. More of the reports need added to flags listing.
+Output formatting coud be improved as well. The byerror flag doesn't do anything. More of the reports need added to flags listing.
 
 .SH AUTHOR 
 Bill Anderson <bill.anderson@rackspace.com>

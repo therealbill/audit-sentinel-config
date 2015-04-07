@@ -106,7 +106,7 @@ type LocalSentinelConfig struct {
 func LoadSentinelConfigFile() error {
 	lsconf.ManagedPodConfigs = make(map[string]SentinelPodConfig)
 	lsconf.KnownSentinels = make(map[string]string)
-	file, err := os.Open("/etc/redis/sentinel.conf")
+	file, err := os.Open(useConfig)
 	defer file.Close()
 	if err != nil {
 		log.Print(err)
@@ -292,10 +292,12 @@ func (r *Report) Set(value string) error {
 
 var reportFlag Report
 var showByError bool
+var useConfig string
 
 func init() {
 	flag.Var(&reportFlag, "report", "comma-separated list of reports to run")
-	flag.BoolVar(&showByError, "byerror", false, "For each found error show all pods which have it")
+	flag.BoolVar(&showByError, "byerror", true, "group errors by error type")
+	flag.StringVar(&useConfig, "config", "/etc/redis/sentinel.conf", "If your config is not /etc/redis/sentinel.conf, specify it here")
 	PodsWithIssues = make(map[ConfigIssue][]SentinelPodConfig)
 }
 
@@ -438,7 +440,7 @@ func main() {
 		case "known-sentinels":
 			KnownSentinelsReport()
 
-		case "all":
+		case "all", "":
 			BaseConfigReport()
 			KnownSentinelsReport()
 			FindDupeMasterIPs()
