@@ -1,0 +1,14 @@
+{
+	"ImportPath": "github.com/therealbill/audit-sentinel-config",
+	"GoVersion": "go1.4.1",
+	"Deps": [
+		{
+			"ImportPath": "github.com/therealbill/libredis/client",
+			"Rev": "2063b36ba2bf63bfa9b423d3d4624333e9e68983"
+		},
+		{
+			"ImportPath": "github.com/therealbill/libredis/info",
+			"Rev": "2063b36ba2bf63bfa9b423d3d4624333e9e68983"
+		}
+	]
+}
