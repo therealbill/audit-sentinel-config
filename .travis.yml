@@ -1,16 +1,9 @@
 language: go
 go:
 - 1.4.1
-env:
-  global:
-    secure: LKuY5oOpSDoI2UrXSBORlZwWkGCwdtgh3Jx0rAAELBiO+5ve/iSOzMwT4fNGD1sHAGe8x3hv+jHzKUoYrjCqd49yCVyr9WncT8uN0qlNH2jo73z8J1xHeI0PF2CzmyzFG7h1LcikrC4SCOEZUtOjQ4e2YkLoEaoL7zekz4HbyEE=
 
-deploy:
-  provider: releases
-  api_key: "LKuY5oOpSDoI2UrXSBORlZwWkGCwdtgh3Jx0rAAELBiO+5ve/iSOzMwT4fNGD1sHAGe8x3hv+jHzKUoYrjCqd49yCVyr9WncT8uN0qlNH2jo73z8J1xHeI0PF2CzmyzFG7h1LcikrC4SCOEZUtOjQ4e2YkLoEaoL7zekz4HbyEE="
-  file: 
-    - "audit-sentinel-config"
-    - "audit-sentinel-config.8"
-  skip_cleanup: true
-  on:
-    branch: master
+before_install:
+  - go get github.com/tcnksm/ghr
+
+after_success:
+  - ghr --username therealbill --token $GITHUB_TOKEN --replace release dist/
