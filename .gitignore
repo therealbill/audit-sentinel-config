@@ -1,0 +1,4 @@
+audit-sentinel-config
+*.swp
+work/
+dist/
