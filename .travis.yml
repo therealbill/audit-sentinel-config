@@ -12,6 +12,8 @@ deploy:
   provider: releases
   api_key:
     secure: DLw90SXUxqz/hBKGxPkcVIySa/raLUeXBt+UF2rIj50EhNF/p9HY1km5b8e/8us/mrZOTwK9ol3if4ghRhyLmMNWb3Uzl3SYvF0jfuW1V8KZqaB5g2NqVyFFAOUbbkWYHmV9wT+LjoiUYZ85xQGK/mMdiabstVvsatufnrxWciQ=
-  file: audit-sentinel-config
+  file: 
+    - audit-sentinel-config
+    - sentinel-audit-config.8
   on:
     repo: therealbill/audit-sentinel-config
