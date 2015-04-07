@@ -51,7 +51,7 @@ func (ci ConfigIssue) String() string {
 
 var (
 	lsconf               LocalSentinelConfig
-	PodsWithIssues       map[string][]string
+	PodsWithIssues       map[ConfigIssue][]SentinelPodConfig
 	masterIPtoPodMapping map[string]SentinelPodConfig
 )
 
@@ -296,6 +296,7 @@ var showByError bool
 func init() {
 	flag.Var(&reportFlag, "report", "comma-separated list of reports to run")
 	flag.BoolVar(&showByError, "byerror", false, "For each found error show all pods which have it")
+	PodsWithIssues = make(map[ConfigIssue][]SentinelPodConfig)
 }
 
 func BaseConfigReport() {
@@ -326,23 +327,26 @@ func KnownSentinelsReport() {
 }
 
 func PodReport() {
-	fmt.Printf("%d of %d Pods have configuration issues", PodsWithIssues, len(lsconf.ManagedPodConfigs))
-	fmt.Println()
 	fmt.Printf("Locally Configured Pods: %d\n", len(lsconf.ManagedPodConfigs))
-	PodsWithIssues := 0
 	for k, v := range lsconf.ManagedPodConfigs {
 		//log.Printf("%s: %+v", k, v)
 		v.validatePodSentinels()
 		issues := v.ConfigIssues()
 		if len(issues) > 0 {
 			fmt.Printf("%s has %d configuration issues", k, len(issues))
-			PodsWithIssues++
 			for _, issue := range issues {
 				lsconf.ConfigIssueMapping[issue] = append(lsconf.ConfigIssueMapping[issue], v)
+				PodsWithIssues[issue] = append(PodsWithIssues[issue], v)
 			}
 		}
 	}
-	if PodsWithIssues > 0 {
+	issuecount := 0
+	for _, i := range PodsWithIssues {
+		issuecount += len(i)
+	}
+	fmt.Printf("%d of %d Pods have configuration issues", issuecount, len(lsconf.ManagedPodConfigs))
+	fmt.Println()
+	if len(PodsWithIssues) > 0 {
 		for issue, podlist := range lsconf.ConfigIssueMapping {
 			fmt.Printf("\nConfig Issue: '%s'\n", issue)
 			fmt.Printf("Pods with issue %d\n", len(podlist))
@@ -364,6 +368,9 @@ func FindDupeMasterIPs() {
 			fmt.Printf("Found Duplicate master! %s and %s share master IP %s", opod.Name, v.Name, v.IP)
 			lsconf.ConfigIssueMapping[DUPLICATEMASTERIP] = append(lsconf.ConfigIssueMapping[DUPLICATEMASTERIP], v)
 			lsconf.ConfigIssueMapping[DUPLICATEMASTERIP] = append(lsconf.ConfigIssueMapping[DUPLICATEMASTERIP], opod)
+			PodsWithIssues[DUPLICATEMASTERIP] = append(PodsWithIssues[DUPLICATEMASTERIP], v)
+			PodsWithIssues[DUPLICATEMASTERIP] = append(PodsWithIssues[DUPLICATEMASTERIP], opod)
+
 			// test v
 			_, err := client.DialWithConfig(&client.DialConfig{Address: fmt.Sprintf("%s:%d", v.IP, v.Port), Password: v.AuthToken})
 			if err != nil {
@@ -392,6 +399,8 @@ func FindDupeSlaveIPs() {
 				log.Printf("Found Duplicate slave! %s and %s share slave IP %s", opod.Name, v.Name, slave)
 				lsconf.ConfigIssueMapping[DUPLICATESLAVEIP] = append(lsconf.ConfigIssueMapping[DUPLICATESLAVEIP], v)
 				lsconf.ConfigIssueMapping[DUPLICATESLAVEIP] = append(lsconf.ConfigIssueMapping[DUPLICATESLAVEIP], opod)
+				PodsWithIssues[DUPLICATESLAVEIP] = append(PodsWithIssues[DUPLICATESLAVEIP], v)
+				PodsWithIssues[DUPLICATESLAVEIP] = append(PodsWithIssues[DUPLICATESLAVEIP], opod)
 			} else {
 				slaveIPtoPodMapping[slave] = v
 			}
@@ -399,6 +408,8 @@ func FindDupeSlaveIPs() {
 				log.Printf("Found Duplicate slave/master! %s is master for %s and slave for %s", slave, opod.Name, v.Name)
 				lsconf.ConfigIssueMapping[DUPLICATESLAVEIP] = append(lsconf.ConfigIssueMapping[DUPLICATESLAVEIP], v)
 				lsconf.ConfigIssueMapping[DUPLICATESLAVEIP] = append(lsconf.ConfigIssueMapping[DUPLICATESLAVEIP], opod)
+				PodsWithIssues[DUPLICATESLAVEIP] = append(PodsWithIssues[DUPLICATESLAVEIP], v)
+				PodsWithIssues[DUPLICATESLAVEIP] = append(PodsWithIssues[DUPLICATESLAVEIP], opod)
 			} else {
 				slaveIPtoPodMapping[slave] = v
 			}
